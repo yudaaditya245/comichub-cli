@@ -26,7 +26,7 @@ export function convertStringToTimestamp(timeAgoString) {
     timestamp = currentTime - years * 12 * 30 * 24 * 60 * 60 * 1000;
   }
 
-  return new Date(timestamp);
+  return (new Date(timestamp)).toISOString();
 }
 
 // console.log( convertStringToTimestamp())

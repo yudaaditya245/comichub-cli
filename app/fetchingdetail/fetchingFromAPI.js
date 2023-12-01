@@ -15,7 +15,7 @@ export async function fetchAPI(totalData = 50) {
     },
     take: totalData,
     orderBy: {
-      updated_at: "desc",
+      updated_at: "asc",
     },
   });
 

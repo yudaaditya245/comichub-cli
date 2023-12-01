@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root@localhost:3306/dev_comichub"
+  url      = env("DATABASE_URL")
+  // shadowDatabaseUrl = env("DATABASE_URL_SHADOW")
 }
 
 model Comics {
@@ -21,21 +22,21 @@ model Comics {
   genres         String   @db.VarChar(255)
   type           String   @db.VarChar(255)
   score          Int?     @default(0)
-  anilist_url    String   @default("") @db.VarChar(255)
-  updated_at     DateTime @db.DateTime()
+  anilist_url    String   @db.VarChar(255)
+  updated_at     String   @db.VarChar(255)
   Scraps         Scraps[]
 }
 
 model Scraps {
-  id             Int      @id @default(autoincrement())
-  title          String   @db.VarChar(255)
-  main_id        Comics?  @relation(fields: [mainId], references: [id])
+  id             Int     @id @default(autoincrement())
+  title          String  @db.VarChar(255)
+  main_id        Comics? @relation(fields: [mainId], references: [id])
   mainId         Int?
-  latest_chapter Int      @db.Int
-  link_chapter   String   @db.VarChar(255)
-  source         String   @db.VarChar(255)
-  link           String   @db.VarChar(255)
-  cover_img      String   @db.VarChar(255)
-  images         String?  @db.Text
-  updated_at     DateTime @db.DateTime()
+  latest_chapter Int     @db.Int
+  link_chapter   String  @db.VarChar(255)
+  source         String  @db.VarChar(255)
+  link           String  @db.VarChar(255)
+  cover_img      String  @db.VarChar(255)
+  images         String? @db.Text
+  updated_at     String  @db.VarChar(255)
 }
