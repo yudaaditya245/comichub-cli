@@ -32,21 +32,26 @@ export const asuraList = async (url = "https://asuratoon.com/") => {
         const newRes = "420x546";
         const cover_img = originalImg.replace(/(\d{2,4}x\d{2,4})/, newRes);
 
-        // get chapter
-        const chap = comic.querySelector(".uta ul > li > a").innerText;
-        const chapp = chap.split(" ");
-        const chapter = parseInt(chapp[1]);
-
-        // get link
         const link = comic.querySelector(".uta .series").getAttribute("href");
 
-        // get chapter link
-        const link_chapter = comic
-          .querySelector(".uta ul > li > a")
-          .getAttribute("href");
+        // get chapter
+        const chap = comic.querySelector(".uta ul > li > a")?.innerText;
 
-        // get updated_at
-        const updated_at = comic.querySelector(".uta ul > li > span").innerText;
+        let chapter, link_chapter, updated_at;
+        if (chap && chap !== null && chap !== undefined) {
+          const chapp = chap.split(" ");
+          chapter = parseInt(chapp[1]);
+
+          link_chapter = comic
+            .querySelector(".uta ul > li > a")
+            .getAttribute("href");
+
+          updated_at = comic.querySelector(".uta ul > li > span").innerText;
+        } else {
+          chapter = 0;
+          link_chapter = "";
+          updated_at = "now";
+        }
 
         return {
           title,
@@ -61,15 +66,16 @@ export const asuraList = async (url = "https://asuratoon.com/") => {
     });
 
     for (const comic of clist) {
-      console.log(chalk.greenBright.bold("Scrapped! ~"), comic.title);
+      console.log(chalk.greenBright.bold("Scrapped asura! ~"), comic.title);
     }
+    console.log("/============/");
     // return and change time style
     return clist.map((data) => {
       return { ...data, updated_at: convertStringToTimestamp(data.updated_at) };
     });
   } catch (err) {
     console.log(err.message);
-    return;
+    throw err;
   } finally {
     if (browser) {
       await browser.close();

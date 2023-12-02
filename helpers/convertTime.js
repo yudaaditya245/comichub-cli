@@ -24,9 +24,11 @@ export function convertStringToTimestamp(timeAgoString) {
   } else if (timeAgoString.includes("year")) {
     const years = parseInt(timeAgoString);
     timestamp = currentTime - years * 12 * 30 * 24 * 60 * 60 * 1000;
+  } else {
+    timestamp = currentTime;
   }
 
-  return (new Date(timestamp)).toISOString();
+  return new Date(timestamp).toISOString();
 }
 
 // console.log( convertStringToTimestamp())

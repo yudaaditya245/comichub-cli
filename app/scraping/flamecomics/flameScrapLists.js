@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
 import { convertStringToTimestamp } from "../../../helpers/convertTime.js";
+import chalk from "chalk";
 
 export const flameLists = async (url = "https://flamecomics.com/") => {
   let browser;
@@ -66,18 +67,17 @@ export const flameLists = async (url = "https://flamecomics.com/") => {
     });
 
     for (const comic of clist) {
-      console.log("Scrapped! - ", comic.title);
+      console.log(chalk.greenBright.bold("Scrapped flame! ~"), comic.title);
     }
+    console.log("/============/");
     // return and change time style
 
     return clist.map((data) => {
       return { ...data, updated_at: convertStringToTimestamp(data.updated_at) };
     });
-
   } catch (err) {
     console.log(err.message);
-    return;
-
+    throw err;
   } finally {
     if (browser) {
       await browser.close();
