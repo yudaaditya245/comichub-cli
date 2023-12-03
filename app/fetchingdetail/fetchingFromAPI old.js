@@ -25,6 +25,8 @@ export async function fetchAPI(totalData = 50) {
 
     // get main id and detail from anilist api, based on the title
     const apiData = await anilistAPI(comic.title);
+    // console.log(comic.title);
+    // console.log(apiData[0]);
 
     // if retrieved api exist, then simply insert to main data
     if (apiData.length > 0) {
@@ -51,7 +53,8 @@ export async function fetchAPI(totalData = 50) {
             description: apiData[0].description,
             cover_img: apiData[0].coverImage.extraLarge,
             latest_chapter: comic.latest_chapter,
-            latest_scrap_id: comic.id,
+            link_chapter: comic.link_chapter,
+            updated_at: comic.updated_at,
             type: apiData[0].countryOfOrigin,
             genres: JSON.stringify(apiData[0].genres),
             synonyms: JSON.stringify(
@@ -60,7 +63,7 @@ export async function fetchAPI(totalData = 50) {
               )
             ),
             anilist_url: apiData[0].siteUrl,
-            score: apiData[0].averageScore,
+            score: apiData[0].averageScore
           },
         });
 
@@ -79,24 +82,19 @@ export async function fetchAPI(totalData = 50) {
           },
           data: {
             latest_chapter: comic.latest_chapter,
-            latest_scrap_id: comic.id,
+            link_chapter: comic.link_chapter,
+            updated_at: comic.updated_at,
           },
         });
-        console.log(
-          logging,
-          chalk.blueBright("\n=== MAIN DATA CHAPTER UPDATED!\n")
-        );
+        console.log(logging, chalk.blueBright("\n=== MAIN DATA CHAPTER UPDATED!\n"));
 
         // if main data exist, but chapter still fresh, just update log
       } else if (
         existMainData &&
         existMainData.latest_chapter >= comic.latest_chapter
       ) {
-        logging += ` ~ main data exist, and chapter still updated, main data not updated : ${existMainData.latest_chapter}`;
-        console.log(
-          logging,
-          chalk.blueBright("\n=== CURRENT DATA BINDED WITH MAIN DATA!\n")
-        );
+        logging += ` ~ main data exist, and chapter still new, main data not updated : ${existMainData.latest_chapter}`;
+        console.log(logging, chalk.blueBright("\n=== CURRENT DATA BINDED WITH MAIN DATA!\n"));
       }
 
       // dont forget to also bind main id found in the api, into the scrap data
@@ -105,7 +103,7 @@ export async function fetchAPI(totalData = 50) {
           id: comic.id,
         },
         data: {
-          main_id: apiData[0].id,
+          mainId: apiData[0].id,
         },
       });
 

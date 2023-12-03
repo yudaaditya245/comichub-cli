@@ -25,13 +25,13 @@ async function run() {
   chapterData = await handleAsyncCall(flameLists, chapterData, errors);
   chapterData = await handleAsyncCall(rizzLists, chapterData, errors);
 
-  // console.log(chapterData);
+  // // // console.log(chapterData);
   console.log("\nGot", chapterData.length, "data scrapped!");
   if (errors.length > 0) {
     console.log("Errors:", errors);
   }
 
-  console.log("\n/=====/\n");
+  // console.log("\n/=====/\n");
 
   console.log("Updating chapter to database...\n");
   await upsertScraps(chapterData);
@@ -39,7 +39,7 @@ async function run() {
   console.log("\n/=====/\n");
 
   console.log("Scraping detailed data from 3rd-party API...\n");
-  await fetchAPI(50);
+  await fetchAPI();
 }
 
 run();

@@ -21,18 +21,10 @@ export async function upsertScraps(comics) {
         },
       });
 
-      if (!checkData) {
-        // id data not found, then adding new data
-        logging += ` ~ data not found in scraps, adding new data: ${comic.latest_chapter}`;
-        await prisma.scraps.create({
-          data: comic,
-        });
-
-        console.log(logging, chalk.greenBright.bold("\n=== ADDED!\n"));
-        added++;
-      } else {
+      // if data already exist in table scraps, then ...
+      if (checkData) {
         logging += " ~ data found in scraps!";
-        // if data found in scrap, update the link in case it changed
+        // update the link in case it changed
         await prisma.scraps.updateMany({
           where: {
             title: comic.title,
@@ -63,15 +55,15 @@ export async function upsertScraps(comics) {
             data: {
               latest_chapter: comic.latest_chapter,
               updated_at: comic.updated_at,
-              images: null,
+              images : null
             },
           });
 
           // after update the chapter in scraps, also update in main comics data, by check first
-          const mainData = checkData.main_id
+          const mainData = checkData.mainId
             ? await prisma.comics.findUnique({
                 where: {
-                  id: checkData.main_id,
+                  id: checkData.mainId,
                 },
               })
             : null;
@@ -79,30 +71,39 @@ export async function upsertScraps(comics) {
           // if main data chapter still behind current scrap, then update also
           logging += " ~ checking main data...";
           if (
-            mainData !== null &&
+            mainData != null &&
             mainData.latest_chapter < comic.latest_chapter
           ) {
             logging += ` ~ main data found, but chapter lag behind, updating: ${mainData.latest_chapter} > ${comic.latest_chapter}`;
 
             await prisma.comics.update({
               where: {
-                id: checkData.main_id,
+                id: checkData.mainId,
               },
               data: {
                 latest_chapter: comic.latest_chapter,
-                latest_scrap_id: checkData.id,
+                link_chapter: comic.link_chapter,
+                updated_at: comic.updated_at
               },
             });
           } else {
-            logging +=
-              mainData === null
-                ? " ~ main data not found"
-                : ` ~ main data already updated: ${mainData.latest_chapter}`;
+            logging += " ~ main id not found, or already updated.";
           }
 
           console.log(logging, chalk.blueBright.bold("\n=== UPDATED!\n"));
           updated++;
         }
+
+        // if data do not exist in table scraps, then simply add new data
+        // perhaps it is a new comic
+      } else {
+        logging += ` ~ data not found in scraps, adding new data: ${comic.latest_chapter}`;
+        await prisma.scraps.create({
+          data: comic,
+        });
+
+        console.log(logging, chalk.greenBright.bold("\n=== ADDED!\n"));
+        added++;
       }
     }
 

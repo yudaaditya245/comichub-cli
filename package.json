@@ -16,7 +16,9 @@
     "dotenv": "^16.3.1",
     "fuse.js": "^7.0.0",
     "luxon": "^3.4.4",
-    "puppeteer": "^21.5.2"
+    "mysql2": "^3.6.5",
+    "puppeteer": "^21.5.2",
+    "sequelize": "^6.35.1"
   },
   "devDependencies": {
     "prisma": "^5.6.0"

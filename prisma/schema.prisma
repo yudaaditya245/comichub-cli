@@ -12,31 +12,32 @@ datasource db {
 }
 
 model Comics {
-  id             Int      @id @default(autoincrement())
-  title          String   @db.VarChar(255)
-  synonyms       String?  @db.Text
-  description    String   @db.Text
-  cover_img      String   @db.VarChar(255)
-  latest_chapter Int      @db.Int
-  link_chapter   String   @db.VarChar(255)
-  genres         String   @db.VarChar(255)
-  type           String   @db.VarChar(255)
-  score          Int?     @default(0)
-  anilist_url    String   @db.VarChar(255)
-  updated_at     String   @db.VarChar(255)
-  Scraps         Scraps[]
+  id              Int      @id @default(autoincrement())
+  title           String   @db.VarChar(255)
+  cover_img       String   @db.VarChar(255)
+  synonyms        String?  @db.Text
+  description     String   @db.Text
+  genres          String   @db.VarChar(255)
+  score           Int?     @default(0)
+  type            String   @db.VarChar(255)
+  anilist_url     String   @db.VarChar(255)
+  latest_chapter  Int
+  latest_scrap    Scraps?  @relation(name: "rel_latest_scrap", fields: [latest_scrap_id], references: [id])
+  latest_scrap_id Int      @unique
+  Scraps          Scraps[] @relation("rel_comic")
 }
 
 model Scraps {
-  id             Int     @id @default(autoincrement())
-  title          String  @db.VarChar(255)
-  main_id        Comics? @relation(fields: [mainId], references: [id])
-  mainId         Int?
-  latest_chapter Int     @db.Int
-  link_chapter   String  @db.VarChar(255)
-  source         String  @db.VarChar(255)
-  link           String  @db.VarChar(255)
-  cover_img      String  @db.VarChar(255)
-  images         String? @db.Text
-  updated_at     String  @db.VarChar(255)
+  id             Int      @id @default(autoincrement())
+  title          String   @db.VarChar(255)
+  mainId         Comics?  @relation(name: "rel_comic", fields: [main_id], references: [id], onDelete: SetNull)
+  main_id        Int?
+  latest_chapter Int      @db.Int
+  link_chapter   String   @db.VarChar(255)
+  source         String   @db.VarChar(255)
+  link           String   @db.VarChar(255)
+  cover_img      String   @db.VarChar(255)
+  images         String?  @db.Text
+  updated_at     DateTime @db.DateTime()
+  Comics         Comics?  @relation("rel_latest_scrap")
 }

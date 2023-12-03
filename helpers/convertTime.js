@@ -28,7 +28,7 @@ export function convertStringToTimestamp(timeAgoString) {
     timestamp = currentTime;
   }
 
-  return new Date(timestamp).toISOString();
+  return new Date(timestamp);
 }
 
 // console.log( convertStringToTimestamp())
