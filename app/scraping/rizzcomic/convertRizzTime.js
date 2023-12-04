@@ -44,5 +44,5 @@ export function convertRizzTime(dateString) {
   }
 
   // If the format is not recognized, return null or handle accordingly
-  return (new Date(timestamp)).toISOString();
+  return new Date(timestamp);
 }

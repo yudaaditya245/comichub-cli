@@ -104,6 +104,16 @@ export async function upsertScraps(comics) {
           updated++;
         }
       }
+
+      // update groups log date
+      await prisma.groups.update({
+        where: {
+          slug: comic.source,
+        },
+        data: {
+          updated_at: new Date(),
+        },
+      });
     }
 
     // THIS IS SIMPLY RECAP WHAT ACTION IN WHICH DATA

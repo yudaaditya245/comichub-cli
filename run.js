@@ -16,7 +16,7 @@ async function handleAsyncCall(asyncFunction, dataArray, errors) {
 }
 
 async function run() {
-  // console.log("Getting comics...\n");
+  console.log("Getting comics...\n");
 
   let chapterData = [];
   let errors = [];
@@ -38,7 +38,7 @@ async function run() {
 
   console.log("\n/=====/\n");
 
-  console.log("Scraping detailed data from 3rd-party API...\n");
+  // console.log("Scraping detailed data from 3rd-party API...\n");
   await fetchAPI();
 }
 
