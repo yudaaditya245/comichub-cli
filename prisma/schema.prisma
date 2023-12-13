@@ -8,35 +8,45 @@ datasource db {
 }
 
 model Comics {
-  id              Int      @id @default(autoincrement())
-  title           String   @db.VarChar(255)
-  cover_img       String   @db.VarChar(255)
-  synonyms        String?  @db.Text
-  description     String   @db.Text
-  genres          String   @db.VarChar(255)
-  score           Int?     @default(0)
-  type            String   @db.VarChar(255)
-  anilist_url     String   @db.VarChar(255)
-  latest_chapter  Int
-  latest_scrap    Scraps?  @relation(name: "rel_latest_scrap", fields: [latest_scrap_id], references: [id])
-  latest_scrap_id Int      @unique
-  Scraps          Scraps[] @relation("rel_comic")
+  id          Int          @id @default(autoincrement())
+  title       String       @db.VarChar(255)
+  cover_img   String       @db.VarChar(255)
+  synonyms    String?      @db.Text
+  description String       @db.Text
+  genres      String       @db.VarChar(255)
+  score       Int?         @default(0)
+  type        String       @db.VarChar(255)
+  anilist_url String       @db.VarChar(255)
+  Scraps      Scraps[]     @relation("rel_comic")
+  ComicLang   ComicsLang[] @relation("rel_comic_lang")
+}
+
+model ComicsLang {
+  id             Int      @id @default(autoincrement())
+  lang           String   @db.VarChar(255)
+  comic_id       Int
+  scrap_id       Int      @unique
+  latest_chapter Int
+  updated_at     DateTime @db.Timestamp()
+  ComicId        Comics   @relation(name: "rel_comic_lang", fields: [comic_id], references: [id])
+  ScrapId        Scraps   @relation(name: "rel_scrap_lang", fields: [scrap_id], references: [id])
 }
 
 model Scraps {
-  id             Int      @id @default(autoincrement())
-  title          String   @db.VarChar(255)
-  mainId         Comics?  @relation(name: "rel_comic", fields: [main_id], references: [id], onUpdate: SetNull)
+  id             Int         @id @default(autoincrement())
+  title          String      @db.VarChar(255)
+  mainId         Comics?     @relation(name: "rel_comic", fields: [main_id], references: [id], onUpdate: SetNull)
   main_id        Int?
-  latest_chapter Int      @db.Int
-  link_chapter   String   @db.VarChar(255)
-  source         String   @db.VarChar(255)
-  source_group   Groups   @relation(name: "rel_group", fields: [source], references: [slug])
-  link           String   @db.VarChar(255)
-  cover_img      String   @db.VarChar(255)
-  images         String?  @db.Text
-  updated_at     DateTime @db.Timestamp()
-  Comics         Comics?  @relation("rel_latest_scrap")
+  latest_chapter Int         @db.Int
+  lang           String      @db.VarChar(255)
+  link_chapter   String      @db.VarChar(255)
+  source         String      @db.VarChar(255)
+  source_group   Groups      @relation(name: "rel_group", fields: [source], references: [slug])
+  link           String      @db.VarChar(255)
+  cover_img      String      @db.VarChar(255)
+  images         String?     @db.Text
+  updated_at     DateTime    @db.Timestamp()
+  ComicLang      ComicsLang? @relation("rel_scrap_lang")
 }
 
 model Groups {

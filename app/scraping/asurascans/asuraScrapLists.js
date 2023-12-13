@@ -56,6 +56,7 @@ export const asuraList = async (url = "https://asuratoon.com/") => {
         return {
           title,
           source: "asurascans",
+          lang : 'en',
           latest_chapter: chapter,
           updated_at,
           link,

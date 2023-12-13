@@ -57,6 +57,7 @@ export const flameLists = async (url = "https://flamecomics.com/") => {
         return {
           title,
           source: "flamecomics",
+          lang : 'en',
           latest_chapter: chapter,
           updated_at,
           link,

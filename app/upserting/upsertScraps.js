@@ -69,9 +69,10 @@ export async function upsertScraps(comics) {
 
           // after update the chapter in scraps, also update in main comics data, by check first
           const mainData = checkData.main_id
-            ? await prisma.comics.findUnique({
+            ? await prisma.comicsLang.findFirst({
                 where: {
-                  id: checkData.main_id,
+                  comic_id: checkData.main_id,
+                  lang: checkData.lang
                 },
               })
             : null;
@@ -84,13 +85,14 @@ export async function upsertScraps(comics) {
           ) {
             logging += ` ~ main data found, but chapter lag behind, updating: ${mainData.latest_chapter} > ${comic.latest_chapter}`;
 
-            await prisma.comics.update({
+            await prisma.comicsLang.update({
               where: {
-                id: checkData.main_id,
+                comic_id: checkData.main_id,
+                lang : checkData.lang
               },
               data: {
                 latest_chapter: comic.latest_chapter,
-                latest_scrap_id: checkData.id,
+                scrap_id: checkData.id,
               },
             });
           } else {

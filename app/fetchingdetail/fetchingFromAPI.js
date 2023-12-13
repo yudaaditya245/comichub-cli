@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { anilistAPI } from "./apis.js";
 import chalk from "chalk";
+import { insertMainData, upsertChapLang } from "./func.js";
 
 const prisma = new PrismaClient();
 
@@ -26,7 +27,13 @@ export async function fetchAPI(totalData = 50) {
     // get main id and detail from anilist api, based on the title
     const apiData = await anilistAPI(comic.title);
 
-    // if retrieved api exist, then simply insert to main data
+    // if retrieved api DONT exist
+    if (apiData.length < 1) {
+      console.log(chalk.redBright("=== DETAIL NOT FOUND!\n"));
+      notFound++;
+    }
+
+    // if retrieved api exist
     if (apiData.length > 0) {
       logging += ` ~ found detail : ${(
         apiData[0].title.english ??
@@ -44,75 +51,69 @@ export async function fetchAPI(totalData = 50) {
       // if detail doesnt exist in main data, then add new main data
       if (!existMainData) {
         logging += " ~ main data does not exist, adding main data...";
-        await prisma.comics.create({
-          data: {
-            id: apiData[0].id,
-            title: comic.title,
-            description: apiData[0].description,
-            cover_img: apiData[0].coverImage.extraLarge,
-            latest_chapter: comic.latest_chapter,
-            latest_scrap_id: comic.id,
-            type: apiData[0].countryOfOrigin,
-            genres: JSON.stringify(apiData[0].genres),
-            synonyms: JSON.stringify(
-              [...apiData[0].synonyms, Object.values(apiData[0].title)].filter(
-                (value) => value !== undefined && value !== null
-              )
-            ),
-            anilist_url: apiData[0].siteUrl,
-            score: apiData[0].averageScore,
-          },
-        });
 
+        await insertMainData(comic, apiData);
         console.log(logging, chalk.greenBright("\n=== MAIN DATA CREATED!\n"));
+      } else {
+        // if main data exist, update depend on the chapter
+        const updateChap = await upsertChapLang(comic, apiData);
 
-        // if main data exist, and chapter lag behind, than update
-      } else if (
-        existMainData &&
-        existMainData.latest_chapter < comic.latest_chapter
-      ) {
-        logging += ` ~ main data exist, but chapter lag, updating chapter : ${existMainData.latest_chapter} > ${comic.latest_chapter}`;
-
-        await prisma.comics.update({
-          where: {
-            id: apiData[0].id,
-          },
-          data: {
-            latest_chapter: comic.latest_chapter,
-            latest_scrap_id: comic.id,
-          },
-        });
-        console.log(
-          logging,
-          chalk.blueBright("\n=== MAIN DATA CHAPTER UPDATED!\n")
-        );
-
-        // if main data exist, but chapter still fresh, just update log
-      } else if (
-        existMainData &&
-        existMainData.latest_chapter >= comic.latest_chapter
-      ) {
-        logging += ` ~ main data exist, and chapter still updated, main data not updated : ${existMainData.latest_chapter}`;
-        console.log(
-          logging,
-          chalk.blueBright("\n=== CURRENT DATA BINDED WITH MAIN DATA!\n")
-        );
+        if (updateChap) {
+          logging += ` ~ main data exist, but chapter lag, updating chapter : ${existMainData.latest_chapter} > ${comic.latest_chapter}`;
+          console.log(
+            logging,
+            chalk.blueBright("\n=== MAIN DATA CHAPTER UPDATED!\n")
+          );
+        } else {
+          logging += ` ~ main data exist, and chapter still updated, main data not updated : ${existMainData.latest_chapter}`;
+          console.log(
+            logging,
+            chalk.blueBright("\n=== CURRENT DATA BINDED WITH MAIN DATA!\n")
+          );
+        }
       }
+      // else if (
+      //   existMainData &&
+      //   existMainData.latest_chapter < comic.latest_chapter
+      // ) {
 
-      // dont forget to also bind main id found in the api, into the scrap data
-      await prisma.scraps.update({
-        where: {
-          id: comic.id,
-        },
-        data: {
-          main_id: apiData[0].id,
-        },
-      });
+      //   await prisma.comics.update({
+      //     where: {
+      //       id: apiData[0].id,
+      //     },
+      //     data: {
+      //       latest_chapter: comic.latest_chapter,
+      //       latest_scrap_id: comic.id,
+      //     },
+      //   });
+      //   console.log(
+      //     logging,
+      //     chalk.blueBright("\n=== MAIN DATA CHAPTER UPDATED!\n")
+      //   );
+
+      //   // if main data exist, but chapter still fresh, just update log
+      // } else if (
+      //   existMainData &&
+      //   existMainData.latest_chapter >= comic.latest_chapter
+      // ) {
+      //   logging += ` ~ main data exist, and chapter still updated, main data not updated : ${existMainData.latest_chapter}`;
+      //   console.log(
+      //     logging,
+      //     chalk.blueBright("\n=== CURRENT DATA BINDED WITH MAIN DATA!\n")
+      //   );
+      // }
+
+      // // dont forget to also bind main id found in the api, into the scrap data
+      // await prisma.scraps.update({
+      //   where: {
+      //     id: comic.id,
+      //   },
+      //   data: {
+      //     main_id: apiData[0].id,
+      //   },
+      // });
 
       updated++;
-    } else {
-      console.log(chalk.redBright("=== DETAIL NOT FOUND!\n"));
-      notFound++;
     }
 
     await prisma.$disconnect();

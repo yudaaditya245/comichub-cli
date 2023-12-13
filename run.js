@@ -22,8 +22,8 @@ async function run() {
   let errors = [];
 
   chapterData = await handleAsyncCall(asuraList, chapterData, errors);
-  chapterData = await handleAsyncCall(flameLists, chapterData, errors);
-  chapterData = await handleAsyncCall(rizzLists, chapterData, errors);
+  // chapterData = await handleAsyncCall(flameLists, chapterData, errors);
+  // chapterData = await handleAsyncCall(rizzLists, chapterData, errors);
 
   // // // console.log(chapterData);
   console.log("\nGot", chapterData.length, "data scrapped!");
@@ -39,7 +39,7 @@ async function run() {
   console.log("\n/=====/\n");
 
   // console.log("Scraping detailed data from 3rd-party API...\n");
-  await fetchAPI();
+  await fetchAPI(5);
 }
 
 run();

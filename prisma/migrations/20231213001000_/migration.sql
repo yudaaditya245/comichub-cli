@@ -39,8 +39,9 @@ CREATE TABLE `Groups` (
     `slug` VARCHAR(191) NOT NULL,
     `updated_at` TIMESTAMP NOT NULL,
     `link` VARCHAR(191) NOT NULL,
-    `icon` VARCHAR(191) NOT NULL,
+    `icon` VARCHAR(191) NULL,
 
+    UNIQUE INDEX `Groups_slug_key`(`slug`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -49,3 +50,6 @@ ALTER TABLE `Comics` ADD CONSTRAINT `Comics_latest_scrap_id_fkey` FOREIGN KEY (`
 
 -- AddForeignKey
 ALTER TABLE `Scraps` ADD CONSTRAINT `Scraps_main_id_fkey` FOREIGN KEY (`main_id`) REFERENCES `Comics`(`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+-- AddForeignKey
+ALTER TABLE `Scraps` ADD CONSTRAINT `Scraps_source_fkey` FOREIGN KEY (`source`) REFERENCES `Groups`(`slug`) ON DELETE RESTRICT ON UPDATE CASCADE;
