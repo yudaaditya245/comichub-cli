@@ -5,7 +5,7 @@ import { convertRizzTime } from "../../helpers/convertRizzTime.js";
 
 export const rizzList = async (url = "https://rizzcomics.com/") => {
   try {
-    const { data } = await axios.get(url, { timeout: 5000 });
+    const { data } = await axios.get(url, { timeout: 10000 });
     const $ = cheerio.load(data);
 
     const clist = $(".listupd > div.utao.styletwo")

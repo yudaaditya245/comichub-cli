@@ -5,7 +5,7 @@ import { convertStringToTimestamp } from "../../helpers/convertTime.js";
 
 export const drakeList = async (url = "https://drakescans.com/") => {
   try {
-    const { data } = await axios.get(url, { timeout: 5000 });
+    const { data } = await axios.get(url, { timeout: 10000 });
     const $ = cheerio.load(data);
 
     const clist = $("div#loop-content > .page-listing-item > div > div")

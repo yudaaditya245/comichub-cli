@@ -28,8 +28,8 @@ model ComicsLang {
   scrap_id       Int      @unique
   latest_chapter Int
   updated_at     DateTime @db.Timestamp()
-  ComicId        Comics   @relation(name: "rel_comic_lang", fields: [comic_id], references: [id])
-  ScrapId        Scraps   @relation(name: "rel_scrap_lang", fields: [scrap_id], references: [id])
+  ComicId        Comics   @relation(name: "rel_comic_lang", fields: [comic_id], references: [id], onDelete: NoAction)
+  ScrapId        Scraps   @relation(name: "rel_scrap_lang", fields: [scrap_id], references: [id], onDelete: NoAction)
 }
 
 model Scraps {
@@ -50,11 +50,13 @@ model Scraps {
 }
 
 model Groups {
-  id         Int      @id @default(autoincrement())
-  title      String
-  slug       String   @unique
-  updated_at DateTime @db.Timestamp()
-  link       String
-  icon       String?
-  Scraps     Scraps[] @relation(name: "rel_group")
+  id            Int       @id @default(autoincrement())
+  title         String
+  slug          String    @unique
+  updated_at    DateTime  @db.Timestamp()
+  error_at      DateTime? @db.Timestamp()
+  error_message String?
+  link          String
+  icon          String?
+  Scraps        Scraps[]  @relation(name: "rel_group")
 }

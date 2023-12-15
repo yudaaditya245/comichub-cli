@@ -5,7 +5,7 @@ import { convertStringToTimestamp } from "../../helpers/convertTime.js";
 
 export const asuraList = async (url = "https://asuratoon.com/") => {
   try {
-    const { data } = await axios.get(url, { timeout: 5000 });
+    const { data } = await axios.get(url, { timeout: 10000 });
     const $ = cheerio.load(data);
 
     const clist = $(".uta")

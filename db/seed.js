@@ -23,6 +23,13 @@ const groups = [
     link: "https://flamecomics.com/",
     icon: "",
   },
+  {
+    title: "Drake Scans",
+    slug: "drakescans",
+    updated_at: new Date(),
+    link: "https://drakescans.com/",
+    icon: "",
+  },
 ];
 
 async function main() {
