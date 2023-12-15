@@ -1,9 +1,19 @@
-import { Comics } from "./sequelize/models.js";
-import { Scraps } from "./sequelize/models.js";
+import { asuraList } from "./groups/asurascans/scrape.js";
+import { drakeList } from "./groups/drakescans/scrape.js";
+import { flameList } from "./groups/flamecomics/scrape.js";
+import { rizzList } from "./groups/rizzcomic/scrape.js";
 
-Comics.findAll({
-  limit: 5,
-  include: [{ model: Scraps, as: 'number3' }]
-}).then((d) => {
-  console.log(d);
-});
+async function run() {
+  console.log("Getting comics...\n");
+
+  const chapterData = await Promise.all([
+    asuraList(), 
+    flameList(), 
+    rizzList(),
+    drakeList()
+  ]);
+
+  // console.log(chapterData.flat());
+}
+
+run();
