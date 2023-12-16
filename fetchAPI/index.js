@@ -10,12 +10,15 @@ import {
 
 const prisma = new PrismaClient();
 
-export async function fetchAPI(limit = 20) {
+export async function fetchAPI(limit = 50) {
   const getScraps = await prisma.scraps.findMany({
     where: {
       main_id: null,
     },
     take: limit,
+    orderBy : {
+      updated_at : 'desc'
+    }
   });
 
   for (const comic of getScraps) {

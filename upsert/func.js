@@ -41,7 +41,7 @@ export async function updateScrape(comic) {
 }
 
 export async function updateRecaped(comic, checkScrape, logging) {
-  const checkMainData = await prisma.comicsLang.findUnique({
+  const checkMainData = await prisma.comicsLang.findFirst({
     where: {
       comic_id: checkScrape.main_id,
       lang: comic.lang,

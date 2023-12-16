@@ -6,22 +6,22 @@ import { rizzList } from "./groups/rizzcomic/scrape.js";
 import { upsertScraps } from "./upsert/index.js";
 
 async function run() {
-  // console.log("Getting comics...\n");
+  console.log("Getting comics...\n");
 
-  // const chapterData = (
-  //   await Promise.all([
-  //     // asuraList(), 
-  //     // flameList(), 
-  //     // rizzList(), 
-  //     drakeList()
-  //   ])
-  // ).flat();
+  const chapterData = (
+    await Promise.all([
+      asuraList(), 
+      flameList(), 
+      rizzList(), 
+      drakeList()
+    ])
+  ).flat();
 
-  // // console.log(chapterData);
+  // console.log(chapterData);
 
-  // await upsertScraps(chapterData);
+  await upsertScraps(chapterData);
 
-  await fetchAPI(15);
+  await fetchAPI();
 }
 
 run();
