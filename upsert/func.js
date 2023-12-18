@@ -35,6 +35,7 @@ export async function updateScrape(comic) {
     data: {
       latest_chapter: comic.latest_chapter,
       link_chapter: comic.link_chapter,
+      updated_at : comic.updated_at,
       images: null,
     },
   });
