@@ -54,7 +54,7 @@ export async function updateRecaped(comic, checkScrape, logging) {
   } else {
     logging += " ~ main data found with old chapter, updating main data";
 
-    await prisma.comicsLang.update({
+    await prisma.comicsLang.updateMany({
       where: {
         comic_id: checkScrape.main_id,
         lang: comic.lang,

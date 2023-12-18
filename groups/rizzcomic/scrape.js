@@ -1,7 +1,6 @@
 import axios from "axios";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
-import { convertRizzTime } from "../../helpers/convertRizzTime.js";
 
 export const rizzList = async (url = "https://rizzcomics.com/") => {
   try {

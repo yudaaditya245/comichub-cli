@@ -1,11 +1,11 @@
 import axios from "axios";
 import chalk from "chalk";
 import * as cheerio from "cheerio";
-import { convertStringToTimestamp } from "../../helpers/convertTime.js";
+import { convertStringToTimestamp, slashToTimestamp } from "../../helpers/convertTime.js";
 
 export const drakeList = async (url = "https://drakescans.com/") => {
   try {
-    const { data } = await axios.get(url, { timeout: 10000 });
+    const { data } = await axios.get(url, { timeout: 20000 });
     const $ = cheerio.load(data);
 
     const clist = $("div#loop-content > .page-listing-item > div > div")
@@ -35,16 +35,23 @@ export const drakeList = async (url = "https://drakescans.com/") => {
           .attr("href");
 
         // updated_at
-        const updated_at = $(comic)
-          .find(".list-chapter .post-on > a")
+        const updated_at_string = $(comic)
+          .find(".list-chapter > .chapter-item:first-child > .post-on > a")
           .attr("title");
+        const updated_at_slash = $(comic)
+          .find(".list-chapter > .chapter-item:first-child > .post-on")
+          .text();
+        const datePattern = /\b\d{1,2}\/\d{1,2}\/\d{4}\b/;
+        const updated_at = updated_at_string
+          ? convertStringToTimestamp(updated_at_string)
+          : slashToTimestamp(datePattern.exec(updated_at_slash)[0]);
 
         return {
           title,
           source: "drakescans",
           lang: "en",
           latest_chapter: chapter,
-          updated_at: convertStringToTimestamp(updated_at),
+          updated_at,
           link,
           link_chapter,
           cover_img,
@@ -68,4 +75,4 @@ export const drakeList = async (url = "https://drakescans.com/") => {
   }
 };
 
-// drakeList();
+// drakeList().then((res) => console.log(res));

@@ -18,9 +18,10 @@ async function run() {
   ).flat();
 
   // console.log(chapterData);
-
+  
   await upsertScraps(chapterData);
-
+  
+  console.log("\n=== FETCHING API ===\n");
   await fetchAPI();
 }
 
