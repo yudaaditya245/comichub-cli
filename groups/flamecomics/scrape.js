@@ -5,7 +5,7 @@ import { convertStringToTimestamp } from "../../helpers/convertTime.js";
 
 export const flameList = async (url = "https://flamecomics.com/") => {
   try {
-    const { data } = await axios.get(url, { timeout: 10000 });
+    const { data } = await axios.get(url, { timeout: 20000 });
     const $ = cheerio.load(data);
 
     const clist = $(".latest-updates > div")

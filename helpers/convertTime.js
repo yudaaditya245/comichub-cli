@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export function convertStringToTimestamp(timeAgoString = "") {
   const currentTime = new Date();
   let timestamp;
@@ -35,5 +37,3 @@ export function slashToTimestamp(dateString) {
   const [day, month, year] = dateString.split("/");
   return new Date(year, month - 1, day);
 }
-
-// console.log( convertStringToTimestamp())

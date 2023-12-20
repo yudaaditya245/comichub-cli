@@ -3,6 +3,7 @@ import { asuraList } from "./groups/asurascans/scrape.js";
 import { drakeList } from "./groups/drakescans/scrape.js";
 import { flameList } from "./groups/flamecomics/scrape.js";
 import { rizzList } from "./groups/rizzcomic/scrape.js";
+import { shinigamiList } from "./groups/shinigami/scrape.js";
 import { upsertScraps } from "./upsert/index.js";
 
 async function run() {
@@ -13,7 +14,8 @@ async function run() {
       asuraList(), 
       flameList(), 
       rizzList(), 
-      drakeList()
+      drakeList(),
+      shinigamiList(),
     ])
   ).flat();
 
