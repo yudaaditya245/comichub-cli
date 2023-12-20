@@ -19,6 +19,8 @@
     "luxon": "^3.4.4",
     "mysql2": "^3.6.5",
     "puppeteer": "^21.5.2",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "sequelize": "^6.35.1"
   },
   "devDependencies": {

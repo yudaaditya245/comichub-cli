@@ -1,11 +1,14 @@
-import puppeteer from "puppeteer";
+// import puppeteer from "puppeteer";
 import chalk from "chalk";
 import { convertStringToTimestamp } from "../../helpers/convertTime.js";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 export const shinigamiList = async (url = "https://shinigami.moe/") => {
   let browser;
 
   try {
+    puppeteer.use(StealthPlugin());
     browser = await puppeteer.launch({
       headless: "new",
       defaultViewport: null
@@ -78,10 +81,10 @@ export const shinigamiList = async (url = "https://shinigami.moe/") => {
   }
 };
 
-// shinigamiList()
-//   .then(res => {
-//     console.log(res);
-//   })
-//   .catch(e => {
-//     console.log(e.message);
-//   });
+shinigamiList()
+  .then(res => {
+    console.log(res);
+  })
+  .catch(e => {
+    console.log(e.message);
+  });
