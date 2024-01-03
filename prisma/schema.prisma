@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -25,7 +25,7 @@ model Scraps {
   title          String          @db.VarChar(255)
   mainId         Comics?         @relation(name: "rel_comic", fields: [main_id], references: [id], onUpdate: SetNull)
   main_id        Int?
-  latest_chapter Int             @db.Integer
+  latest_chapter Int             @db.Int
   lang           String          @db.VarChar(255)
   link_chapter   String          @db.VarChar(255)
   source         String          @db.VarChar(255)

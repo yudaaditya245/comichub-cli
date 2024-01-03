@@ -22,7 +22,7 @@ async function run() {
   await upsertScraps(chapterData);
   
   console.log("\n=== FETCHING API ===\n");
-  await fetchAPI(10);
+  await fetchAPI();
 }
 
 run();
