@@ -21,8 +21,8 @@ async function run() {
   
   await upsertScraps(chapterData);
   
-  console.log("\n=== FETCHING API ===\n");
-  await fetchAPI();
+  // console.log("\n=== FETCHING API ===\n");
+  // await fetchAPI();
 
   logLastScrapTime()
 }

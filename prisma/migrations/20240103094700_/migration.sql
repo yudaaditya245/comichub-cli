@@ -4,7 +4,7 @@ CREATE TABLE `Comics` (
     `title` VARCHAR(255) NOT NULL,
     `cover_img` VARCHAR(255) NOT NULL,
     `synonyms` TEXT NULL,
-    `description` TEXT NOT NULL,
+    `description` TEXT NULL,
     `genres` VARCHAR(255) NOT NULL,
     `score` INTEGER NULL DEFAULT 0,
     `type` VARCHAR(255) NOT NULL,

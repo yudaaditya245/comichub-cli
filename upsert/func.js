@@ -58,7 +58,7 @@ export async function createChapter(scrap_id, comic) {
   await prisma.scrapChapters.create({
     data: {
       scrap_id,
-      link: comic.link,
+      link: comic.link_chapter,
       chapter: comic.latest_chapter,
       images: null,
       updated_at: comic.updated_at

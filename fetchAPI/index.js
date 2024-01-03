@@ -5,7 +5,7 @@ import { bindMainId, checkingComic, createMainData } from "./func.js";
 
 const prisma = new PrismaClient();
 
-export async function fetchAPI(limit = 80) {
+export async function fetchAPI(limit = 50) {
   let created = 0,
     binded = 0,
     ignored = 0;
