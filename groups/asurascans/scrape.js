@@ -23,7 +23,7 @@ export const asuraList = async (url = "https://asuratoon.com/") => {
         let chapter, link_chapter, updated_at;
         if (chap && chap !== null && chap !== undefined) {
           const chapp = chap.split(" ");
-          chapter = parseInt(chapp[1]);
+          chapter = parseFloat(chapp[1]);
 
           link_chapter = $(comic).find(".uta ul > li > a").attr("href");
 
@@ -64,3 +64,5 @@ export const asuraList = async (url = "https://asuratoon.com/") => {
       };
   }
 };
+
+// asuraList()

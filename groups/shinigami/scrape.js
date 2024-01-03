@@ -40,7 +40,7 @@ export const shinigamiList = async (url = "https://shinigami.moe/") => {
 
         const chap = comic.querySelector(".series-content .series-chapter-item:first-child > span.series-badge")?.innerText;
         const chapp = chap.split(" ");
-        const chapter = parseInt(chapp[1]);
+        const chapter = parseFloat(chapp[1]);
 
         const link_chapter = comic.querySelector(".series-content > a:first-child").getAttribute("href");
 
@@ -81,10 +81,10 @@ export const shinigamiList = async (url = "https://shinigami.moe/") => {
   }
 };
 
-shinigamiList()
-  .then(res => {
-    console.log(res);
-  })
-  .catch(e => {
-    console.log(e.message);
-  });
+// shinigamiList()
+//   .then(res => {
+//     console.log(res);
+//   })
+//   .catch(e => {
+//     console.log(e.message);
+//   });

@@ -20,7 +20,7 @@ export const drakeList = async (url = "https://drakescans.com/") => {
           .find(".list-chapter > .chapter-item:first-child > span.chapter > a")
           .text();
         const chapp = chap.split(" ");
-        const chapter = parseInt(chapp[2]);
+        const chapter = parseFloat(chapp[2]);
 
         // cover
         const cover_raw = $(comic).find(".item-thumb > a").text();

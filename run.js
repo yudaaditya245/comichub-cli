@@ -18,13 +18,11 @@ async function run() {
       shinigamiList(),
     ])
   ).flat();
-
-  // console.log(chapterData);
   
   await upsertScraps(chapterData);
   
   console.log("\n=== FETCHING API ===\n");
-  await fetchAPI();
+  await fetchAPI(10);
 }
 
 run();

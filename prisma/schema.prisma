@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -17,23 +17,34 @@ model Comics {
   score       Int?     @default(0)
   type        String   @db.VarChar(255)
   anilist_url String   @db.VarChar(255)
-  scraps      Scraps[] @relation("rel_comic")
+  Scraps      Scraps[] @relation("rel_comic")
 }
 
 model Scraps {
-  id             Int      @id @default(autoincrement())
-  title          String   @db.VarChar(255)
-  comic          Comics?  @relation(name: "rel_comic", fields: [main_id], references: [id], onUpdate: SetNull)
+  id             Int             @id @default(autoincrement())
+  title          String          @db.VarChar(255)
+  mainId         Comics?         @relation(name: "rel_comic", fields: [main_id], references: [id], onUpdate: SetNull)
   main_id        Int?
-  latest_chapter Int      @db.Int
-  lang           String   @db.VarChar(255)
-  link_chapter   String   @db.VarChar(255)
-  source         String   @db.VarChar(255)
-  source_group   Groups   @relation(name: "rel_group", fields: [source], references: [slug])
-  link           String   @db.VarChar(255)
-  cover_img      String   @db.VarChar(255)
-  images         String?  @db.Text
-  updated_at     DateTime @db.Timestamp()
+  latest_chapter Int             @db.Integer
+  lang           String          @db.VarChar(255)
+  link_chapter   String          @db.VarChar(255)
+  source         String          @db.VarChar(255)
+  source_group   Groups          @relation(name: "rel_group", fields: [source], references: [slug])
+  link           String          @db.VarChar(255)
+  cover_img      String          @db.VarChar(255)
+  images         String?         @db.Text
+  updated_at     DateTime        @db.Timestamp()
+  chapters       ScrapChapters[]
+}
+
+model ScrapChapters {
+  id         Int      @id @default(autoincrement())
+  scrap_id   Int
+  link       String
+  chapter    Int
+  images     String?
+  updated_at DateTime @db.Timestamp()
+  scrap      Scraps   @relation(fields: [scrap_id], references: [id])
 }
 
 model Groups {

@@ -18,7 +18,7 @@ export const rizzList = async (url = "https://rizzcomics.com/") => {
           .find(".uta .luf > ul.Manhwa > li:first-child > a")
           .text();
         const chapp = chap.split(" ");
-        const chapter = parseInt(chapp[1]);
+        const chapter = parseFloat(chapp[1]);
 
         const link = $(comic).find(".uta .luf > a").attr("href");
 
