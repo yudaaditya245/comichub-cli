@@ -26,7 +26,7 @@ export async function createMainData(apiData, comicData) {
       type: apiData[0].countryOfOrigin,
       genres: JSON.stringify(apiData[0].genres),
       synonyms: JSON.stringify(
-        [...apiData[0].synonyms, Object.values(apiData[0].title)].filter(
+        [...apiData[0].synonyms, Object.values(apiData[0].title)].flat().filter(
           (value) => value !== undefined && value !== null
         )
       ),

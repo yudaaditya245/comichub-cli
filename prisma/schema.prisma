@@ -12,12 +12,12 @@ model Comics {
   title       String   @db.VarChar(255)
   cover_img   String   @db.VarChar(255)
   synonyms    String?  @db.Text
-  description String   @db.Text
+  description String?   @db.Text
   genres      String   @db.VarChar(255)
   score       Int?     @default(0)
   type        String   @db.VarChar(255)
   anilist_url String   @db.VarChar(255)
-  Scraps      Scraps[] @relation("rel_comic")
+  Scraps      Scraps[] @relation(name: "rel_comic")
 }
 
 model Scraps {
